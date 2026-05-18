@@ -1,0 +1,62 @@
+/* ================================================================
+   SEMIGITA — Modern CSS Reset (basado en Andy Bell's reset)
+   ================================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+input, button, textarea, select {
+  font: inherit;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: var(--leading-tight);
+}
+
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+#root, #__next {
+  isolation: isolate;
+}

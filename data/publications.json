@@ -1,0 +1,35 @@
+[
+  {
+    "id": "pub-2024-ia-anomaly",
+    "title": "Detección de Anomalías en Series de Tiempo Clínicas Mediante Redes LSTM con Explicabilidad",
+    "authors": ["Apellido, A.", "Apellido, B.", "Apellido, C."],
+    "year": 2024,
+    "venue": "Congreso Colombiano de Computación (CCC 2024)",
+    "doi": "",
+    "url": "",
+    "type": "conference",
+    "tags": ["Machine Learning", "LSTM", "XAI"]
+  },
+  {
+    "id": "pub-2024-iot-security",
+    "title": "Análisis de Seguridad en Firmware de Dispositivos IoT Domésticos: Un Enfoque Sistemático",
+    "authors": ["Apellido, D.", "Apellido, E."],
+    "year": 2024,
+    "venue": "Symposium on Information and Communication Technologies (STIC 2024)",
+    "doi": "",
+    "url": "",
+    "type": "conference",
+    "tags": ["IoT", "Ciberseguridad", "Firmware"]
+  },
+  {
+    "id": "pub-2023-gamification",
+    "title": "Impacto de la Gamificación en el Aprendizaje de Programación: Un Estudio de Caso",
+    "authors": ["Apellido, F.", "Apellido, G.", "Apellido, H."],
+    "year": 2023,
+    "venue": "Revista Colombiana de Computación, Vol. 24, No. 2",
+    "doi": "",
+    "url": "",
+    "type": "journal",
+    "tags": ["EdTech", "Gamificación", "STEM"]
+  }
+]
