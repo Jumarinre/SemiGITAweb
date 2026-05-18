@@ -7,12 +7,17 @@
  *   <div data-reveal="scale" data-reveal-delay="200">...</div>
  */
 
-export function initAnimations() {
+function initAnimations() {
   // Respeta prefers-reduced-motion
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const elements = document.querySelectorAll('[data-reveal]');
   if (!elements.length) return;
+
+  if (!('IntersectionObserver' in window)) {
+    elements.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
 
   const observer = new IntersectionObserver(
     entries => {
@@ -30,8 +35,10 @@ export function initAnimations() {
       });
     },
     {
-      rootMargin: '0px 0px -80px 0px',
-      threshold: 0.08,
+      // rootMargin positivo: los elementos se activan 200px ANTES de entrar
+      // en pantalla → cuando el usuario los ve, ya están visibles
+      rootMargin: '0px 0px 200px 0px',
+      threshold: 0,
     }
   );
 
@@ -41,7 +48,7 @@ export function initAnimations() {
 /**
  * showToast — Muestra una notificación temporal
  */
-export function showToast(message, duration = 2500) {
+function showToast(message, duration = 2500) {
   let toast = document.querySelector('.toast');
   if (!toast) {
     toast = document.createElement('div');

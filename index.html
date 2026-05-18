@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Agrega clase .js al <html> ANTES de que cargue el CSS.
+       Permite progressive enhancement: [data-reveal] solo oculta
+       si JavaScript está disponible. Sin JS, todo es siempre visible. -->
+  <script>document.documentElement.classList.add('js');</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="SemiGITA — Semillero de Innovación e Investigación GITA. Estudiantes y docentes investigando en IA, ciberseguridad, IoT y ciencia de datos.">
@@ -251,6 +255,13 @@
         </div><!-- .hero-visual -->
 
       </div><!-- .hero-inner -->
+
+      <!-- Indicador de scroll -->
+      <a href="#about" class="hero-scroll-hint" aria-label="Ver más contenido">
+        <span class="hero-scroll-hint-text">Explorar</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </a>
+
     </section>
 
     <!-- ────────────────────────────────────────────────────────
@@ -259,7 +270,7 @@
     <section id="about" class="section-alt" aria-labelledby="about-heading">
       <div class="container">
 
-        <div class="section-header" data-reveal>
+        <div class="section-header">
           <p class="section-eyebrow">Sobre SemiGITA</p>
           <h2 class="section-title" id="about-heading">Innovación con<br><span class="text-accent">propósito académico</span></h2>
           <p class="section-subtitle">
@@ -270,7 +281,7 @@
         </div>
 
         <div class="about-grid">
-          <div class="glass-card glass-card--accent" data-reveal="left">
+          <div class="glass-card glass-card--accent">
             <div class="research-icon" aria-hidden="true">🎯</div>
             <h3 class="research-title">Misión</h3>
             <p class="research-desc">
@@ -281,7 +292,7 @@
             </p>
           </div>
 
-          <div class="glass-card glass-card--accent" data-reveal="right">
+          <div class="glass-card glass-card--accent">
             <div class="research-icon" aria-hidden="true">🔭</div>
             <h3 class="research-title">Visión</h3>
             <p class="research-desc">
@@ -294,7 +305,7 @@
         </div>
 
         <!-- Estadísticas -->
-        <div class="about-stats" data-reveal>
+        <div class="about-stats">
           <div class="about-stat">
             <div class="stat-number" aria-label="Integrantes activos" id="stat-members">6</div>
             <div class="stat-label">Integrantes</div>
@@ -308,7 +319,7 @@
             <div class="stat-label">Publicaciones</div>
           </div>
           <div class="about-stat">
-            <div class="stat-number" aria-label="Líneas de investigación">6</div>
+            <div class="stat-number" aria-label="Líneas de investigación" id="stat-lines">6</div>
             <div class="stat-label">Líneas</div>
           </div>
         </div>
@@ -322,7 +333,7 @@
     <section id="research" aria-labelledby="research-heading">
       <div class="container">
 
-        <div class="section-header section-header--center" data-reveal>
+        <div class="section-header section-header--center">
           <p class="section-eyebrow">Áreas de trabajo</p>
           <h2 class="section-title" id="research-heading">
             Nuestras <span class="text-accent">Líneas</span> de Investigación
@@ -333,7 +344,7 @@
           </p>
         </div>
 
-        <!-- Cargado dinámicamente desde data/research-lines.json -->
+        <!-- Cargado dinámicamente desde data/research-lines.js -->
         <div class="auto-grid" id="research-grid" role="list" aria-label="Líneas de investigación">
         </div>
 
@@ -346,7 +357,7 @@
     <section id="members" class="section-alt" aria-labelledby="members-heading">
       <div class="container">
 
-        <div class="section-header section-header--center" data-reveal>
+        <div class="section-header section-header--center">
           <p class="section-eyebrow">Quiénes somos</p>
           <h2 class="section-title" id="members-heading">
             El <span class="text-accent">Equipo</span> SemiGITA
@@ -360,7 +371,7 @@
           </p>
         </div>
 
-        <!-- Cargado dinámicamente desde data/members.json -->
+        <!-- Cargado dinámicamente desde data/members.js -->
         <div class="members-grid" id="members-grid" role="list" aria-label="Integrantes del semillero">
         </div>
 
@@ -373,7 +384,7 @@
     <section id="projects" aria-labelledby="projects-heading">
       <div class="container">
 
-        <div class="section-header" data-reveal>
+        <div class="section-header">
           <p class="section-eyebrow">Lo que construimos</p>
           <h2 class="section-title" id="projects-heading">
             Nuestros <span class="text-accent">Proyectos</span>
@@ -391,7 +402,7 @@
           <button class="filter-tab"        data-filter="completed" role="tab" aria-selected="false">Completados</button>
         </div>
 
-        <!-- Cargado dinámicamente desde data/projects.json -->
+        <!-- Cargado dinámicamente desde data/projects.js -->
         <div class="projects-grid" id="projects-grid" aria-label="Lista de proyectos">
         </div>
 
@@ -404,7 +415,7 @@
     <section id="publications" class="section-alt" aria-labelledby="publications-heading">
       <div class="container">
 
-        <div class="section-header" data-reveal>
+        <div class="section-header">
           <p class="section-eyebrow">Producción académica</p>
           <h2 class="section-title" id="publications-heading">
             <span class="text-accent">Publicaciones</span>
@@ -415,7 +426,7 @@
           </p>
         </div>
 
-        <!-- Cargado dinámicamente desde data/publications.json -->
+        <!-- Cargado dinámicamente desde data/publications.js -->
         <div id="publications-list" aria-label="Lista de publicaciones">
         </div>
 
@@ -428,7 +439,7 @@
     <section id="contact" aria-labelledby="contact-heading">
       <div class="container">
 
-        <div class="section-header" data-reveal>
+        <div class="section-header">
           <p class="section-eyebrow">Hablemos</p>
           <h2 class="section-title" id="contact-heading">
             ¿Quieres unirte o <span class="text-accent">colaborar</span>?
@@ -442,19 +453,14 @@
         <div class="contact-grid">
 
           <!-- Columna izquierda: info + WhatsApp -->
-          <div class="contact-info" data-reveal="left">
+          <div class="contact-info">
 
             <!-- WhatsApp CTA -->
             <div class="whatsapp-cta">
               <div class="research-icon" style="margin: 0 auto var(--space-4)" aria-hidden="true">💬</div>
               <p>La forma más rápida de contactarnos es por WhatsApp. Te respondemos en menos de 24 horas.</p>
-              <!--
-                ACTUALIZAR: Reemplaza el número con el número real del semillero.
-                Formato: código de país + número sin espacios ni símbolos.
-                Ejemplo Colombia (+57): 573001234567
-              -->
               <a
-                href="https://wa.me/573001234567?text=Hola%20SemiGITA%2C%20me%20gustar%C3%ADa%20conocer%20m%C3%A1s%20sobre%20el%20semillero%20y%20c%C3%B3mo%20puedo%20participar."
+                href="https://wa.me/573192754096?text=Hola%20SemiGITA%2C%20me%20gustar%C3%ADa%20conocer%20m%C3%A1s%20sobre%20el%20semillero%20y%20c%C3%B3mo%20puedo%20participar."
                 class="btn btn-whatsapp btn-lg"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -470,12 +476,9 @@
               <div class="contact-icon" aria-hidden="true">📧</div>
               <div>
                 <p class="contact-item-label">Correo electrónico</p>
-                <!--
-                  ACTUALIZAR: Reemplaza con el correo oficial del semillero.
-                -->
                 <p class="contact-item-value">
-                  <a href="mailto:semigita@universidad.edu.co" class="link-accent">
-                    semigita@universidad.edu.co
+                  <a href="mailto:semigita_med@unal.edu.co" class="link-accent">
+                    semigita_med@unal.edu.co
                   </a>
                 </p>
               </div>
@@ -485,12 +488,9 @@
               <div class="contact-icon" aria-hidden="true">📍</div>
               <div>
                 <p class="contact-item-label">Ubicación</p>
-                <!--
-                  ACTUALIZAR: Reemplaza con la ubicación real del semillero.
-                -->
                 <p class="contact-item-value">
                   Universidad · Facultad de Ingeniería<br>
-                  Departamento GITA
+                  M3-105
                 </p>
               </div>
             </div>
@@ -509,7 +509,7 @@
           </div><!-- .contact-info -->
 
           <!-- Columna derecha: formulario de contacto -->
-          <div data-reveal="right">
+          <div>
             <div class="glass-card" style="padding: 0; overflow: hidden;">
               <div style="padding: var(--space-6) var(--space-6) var(--space-4)">
                 <h3 style="font-size: var(--text-lg); font-weight: var(--weight-bold); margin-bottom: var(--space-2)">
@@ -695,12 +695,43 @@
   <!-- Toast de notificación -->
   <div class="toast" role="alert" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- JS: ES Modules — auto-defer, no bloquea el render -->
-  <script type="module" src="assets/js/main.js"></script>
+  <!-- Datos del semillero — scripts clásicos, funcionan en file:// en todos los navegadores -->
+  <script src="data/research-lines.js"></script>
+  <script src="data/members.js"></script>
+  <script src="data/projects.js"></script>
+  <script src="data/publications.js"></script>
 
-  <!-- Año del copyright dinámico -->
+  <!-- Lógica — scripts clásicos en orden de dependencia.
+       Sin módulos ES: funciona en file:// en Firefox, Chrome y todos
+       los navegadores, y también en GitHub Pages sin cambios. -->
+  <script src="assets/js/animations.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/particles.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <!-- Fallback: si los módulos ES no cargan (file://, bloqueador, etc.)
+       después de 2.5s todo el contenido oculto se fuerza visible.
+       Cuando los módulos SÍ cargan, main.js marca window.__jsReady = true
+       y este timeout no hace nada. -->
   <script>
     document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+    setTimeout(function () {
+      if (!window.__jsReady) {
+        document.querySelectorAll('[data-reveal]').forEach(function (el) {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+          el.style.transition = 'none';
+        });
+        ['.hero-anim-1','.hero-anim-2','.hero-anim-3','.hero-anim-4','.hero-anim-5'].forEach(function(cls) {
+          document.querySelectorAll(cls).forEach(function(el) {
+            el.style.opacity = '1';
+            el.style.animation = 'none';
+          });
+        });
+      }
+    }, 2500);
   </script>
 
 </body>

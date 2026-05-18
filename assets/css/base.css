@@ -103,11 +103,21 @@ section {
 }
 
 /* ── TEXTO CON ACENTO ───────────────────────────────────────── */
+/* Fallback: siempre cian sólido y legible */
 .text-accent {
-  background: linear-gradient(135deg, var(--cyan-400) 0%, var(--cyan-300) 60%, #a78bfa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--cyan-300);
+}
+/* Gradiente solo cuando el navegador soporta background-clip: text.
+   De esta forma -webkit-text-fill-color: transparent solo aplica
+   si el gradiente va a mostrarse — sin riesgo de texto invisible. */
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .text-accent {
+    background: linear-gradient(135deg, var(--cyan-400) 0%, var(--cyan-300) 60%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 }
 
 /* ── DIVISOR ────────────────────────────────────────────────── */

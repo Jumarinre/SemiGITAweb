@@ -497,11 +497,17 @@
   font-size: clamp(var(--text-4xl), 6vw, var(--text-6xl));
   font-weight: var(--weight-extrabold);
   line-height: 1;
-  background: linear-gradient(135deg, var(--cyan-400), var(--cyan-300));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--cyan-300);
   margin-bottom: var(--space-2);
+}
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .stat-number {
+    background: linear-gradient(135deg, var(--cyan-400), var(--cyan-300));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
 }
 
 .stat-label {

@@ -4,7 +4,7 @@
  * Corre a ~30fps para ahorrar batería.
  */
 
-export function initParticles(canvasId) {
+function initParticles(canvasId) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
 

@@ -2,7 +2,7 @@
  * nav.js — Navegación sticky, hamburger y scroll spy
  */
 
-export function initNav() {
+function initNav() {
   const nav     = document.querySelector('.nav');
   const toggle  = document.querySelector('.nav-toggle');
   const menu    = document.querySelector('.nav-menu');
@@ -60,7 +60,8 @@ export function initNav() {
   }
 
   // ── Scroll spy: activa nav link de la sección visible ─────
-  if (sections.length && navLinks.length) {
+  if (sections.length && navLinks.length && 'IntersectionObserver' in window) {
+    const navOffset = Math.ceil(nav.offsetHeight || 72);
     const spyObserver = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
@@ -73,9 +74,7 @@ export function initNav() {
         });
       },
       {
-        rootMargin: `-${getComputedStyle(document.documentElement)
-          .getPropertyValue('--nav-height')
-          .trim()} 0px -55% 0px`,
+        rootMargin: `-${navOffset}px 0px -55% 0px`,
         threshold: 0,
       }
     );
