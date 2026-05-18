@@ -1,0 +1,45 @@
+window.__SG = window.__SG || {};
+window.__SG.researchLines = [
+  {
+    "id": "ia-ml",
+    "icon": "🧠",
+    "title": "Inteligencia Artificial y Machine Learning",
+    "description": "Investigación en modelos de aprendizaje automático, redes neuronales profundas y sistemas inteligentes aplicados a problemas reales del sector tecnológico y académico.",
+    "tags": ["Deep Learning", "NLP", "Computer Vision"]
+  },
+  {
+    "id": "ciberseguridad",
+    "icon": "🔐",
+    "title": "Ciberseguridad e Innovación Digital",
+    "description": "Análisis de vulnerabilidades, criptografía aplicada y desarrollo de soluciones de seguridad para entornos digitales modernos, con énfasis en seguridad por diseño.",
+    "tags": ["Pentesting", "Criptografía", "Redes"]
+  },
+  {
+    "id": "iot-sistemas",
+    "icon": "⚡",
+    "title": "IoT y Sistemas Embebidos",
+    "description": "Diseño e implementación de dispositivos conectados, automatización de procesos físicos y desarrollo de soluciones de borde (edge computing) para entornos industriales.",
+    "tags": ["Arduino", "Raspberry Pi", "MQTT"]
+  },
+  {
+    "id": "datos-analitica",
+    "icon": "📊",
+    "title": "Ciencia de Datos y Analítica",
+    "description": "Extracción de conocimiento a partir de grandes volúmenes de datos mediante técnicas estadísticas, visualización avanzada y pipelines de datos reproducibles.",
+    "tags": ["Python", "Pandas", "Visualización"]
+  },
+  {
+    "id": "desarrollo-software",
+    "icon": "💻",
+    "title": "Desarrollo de Software de Calidad",
+    "description": "Ingeniería de software con enfoque en arquitecturas limpias, pruebas automatizadas, DevOps y metodologías ágiles aplicadas a proyectos de impacto real.",
+    "tags": ["Clean Architecture", "CI/CD", "Testing"]
+  },
+  {
+    "id": "innovacion-educativa",
+    "icon": "🎓",
+    "title": "Innovación en Educación STEM",
+    "description": "Diseño de experiencias de aprendizaje activo, gamificación y tecnología educativa para fortalecer la enseñanza de ciencias e ingeniería en contextos universitarios.",
+    "tags": ["EdTech", "Gamificación", "STEM"]
+  }
+];
