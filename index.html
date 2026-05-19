@@ -54,7 +54,7 @@
 
         <!-- Logo -->
         <a href="#hero" class="nav-logo" aria-label="SemiGITA — inicio">
-          <div class="nav-logo-icon" aria-hidden="true">S</div>
+          <img src="assets/images/logo/Logo%20de%20SGITA.png" alt="" class="nav-logo-img" aria-hidden="true" width="44" height="44" decoding="async">
           <div class="nav-logo-text">
             <span class="nav-logo-name">SemiGITA</span>
             <span class="nav-logo-sub">Semillero GITA</span>
@@ -344,7 +344,7 @@
           </p>
         </div>
 
-        <!-- Cargado dinámicamente desde data/research-lines.js -->
+        <!-- Cargado dinámicamente desde el Google Sheet (pestaña "lineas") -->
         <div class="auto-grid" id="research-grid" role="list" aria-label="Líneas de investigación">
         </div>
 
@@ -371,7 +371,7 @@
           </p>
         </div>
 
-        <!-- Cargado dinámicamente desde data/members.js -->
+        <!-- Cargado dinámicamente desde el Google Sheet (pestaña "miembros") -->
         <div class="members-grid" id="members-grid" role="list" aria-label="Integrantes del semillero">
         </div>
 
@@ -402,7 +402,7 @@
           <button class="filter-tab"        data-filter="completed" role="tab" aria-selected="false">Completados</button>
         </div>
 
-        <!-- Cargado dinámicamente desde data/projects.js -->
+        <!-- Cargado dinámicamente desde el Google Sheet (pestaña "proyectos") -->
         <div class="projects-grid" id="projects-grid" aria-label="Lista de proyectos">
         </div>
 
@@ -426,7 +426,7 @@
           </p>
         </div>
 
-        <!-- Cargado dinámicamente desde data/publications.js -->
+        <!-- Cargado dinámicamente desde el Google Sheet (pestaña "publicaciones") -->
         <div id="publications-list" aria-label="Lista de publicaciones">
         </div>
 
@@ -628,7 +628,7 @@
         <!-- Marca -->
         <div class="footer-brand">
           <a href="#hero" class="footer-logo" aria-label="SemiGITA — inicio">
-            <div class="nav-logo-icon" aria-hidden="true">S</div>
+            <img src="assets/images/logo/Logo%20de%20SGITA.png" alt="" class="nav-logo-img" aria-hidden="true" width="44" height="44" decoding="async" loading="lazy">
             <span class="footer-brand-name">SemiGITA</span>
           </a>
           <p class="footer-brand-desc">
@@ -695,11 +695,8 @@
   <!-- Toast de notificación -->
   <div class="toast" role="alert" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Datos del semillero — scripts clásicos, funcionan en file:// en todos los navegadores -->
-  <script src="data/research-lines.js"></script>
-  <script src="data/members.js"></script>
-  <script src="data/projects.js"></script>
-  <script src="data/publications.js"></script>
+  <!-- Contenido: data.js lo lee del Google Sheet (ver assets/js/data.js).
+       Requiere servir por http/https (GitHub Pages o servidor local). -->
 
   <!-- Lógica — scripts clásicos en orden de dependencia.
        Sin módulos ES: funciona en file:// en Firefox, Chrome y todos

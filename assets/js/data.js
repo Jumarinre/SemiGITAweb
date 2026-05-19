@@ -1,22 +1,36 @@
 /**
  * data.js — Carga datos e inyecta contenido dinámico en el DOM.
  *
- * Dos fuentes, en este orden de prioridad:
- *   1. Google Sheets — si SHEET_ID está configurado y la página corre
- *      por http/https (p. ej. GitHub Pages).
- *   2. Archivos locales data/*.js (window.__SG.*) — respaldo
- *      automático: funciona sin internet y por file:// en cualquier
- *      navegador. La página nunca queda vacía.
+ * Fuente única: Google Sheets (público, solo lectura), leído por la
+ * Google Sheets API v4 con una API key. No hay archivos locales.
+ *   https://docs.google.com/spreadsheets/d/1VnVd1RaMYzH4TJihuvBFlUks8dbkugExdazHpH3iV-U/edit
  *
- * Para usar Google Sheets: comparte el Sheet como "Cualquiera con el
- * enlace → Lector" y pega su ID abajo en SHEET_ID.
- * Para editar sin Sheets: edita los archivos en data/.
+ * Requisitos:
+ *   - El Sheet debe estar compartido como "Cualquiera con el enlace
+ *     → Lector" y tener 4 pestañas con los nombres de SHEET_TABS.
+ *   - La página debe servirse por http/https (GitHub Pages o un
+ *     servidor local). Por file:// no hay datos (ver loadDataset).
+ *
+ * Para editar el contenido: edita las celdas del Sheet y recarga.
+ * La API key SOLO lee Sheets públicos; no puede modificar nada.
+ *
+ * Imágenes (casillas "foto"/"imagen"): acepta una ruta del repo
+ * (assets/images/...), una URL http(s) cualquiera, o un enlace/ID de
+ * Google Drive (compartido "Cualquiera con el enlace"). resolveImg()
+ * convierte los enlaces de Drive a una URL incrustable.
  */
 
 // ── CONFIG: Google Sheets ──────────────────────────────────────
 // ID del Sheet = lo que va entre /d/ y /edit en la URL del documento.
-// Déjalo vacío ('') para usar solo los archivos locales en data/.
-const SHEET_ID = '';
+// Déjalo vacío ('') para no intentar la carga remota.
+const SHEET_ID = '1VnVd1RaMYzH4TJihuvBFlUks8dbkugExdazHpH3iV-U';
+
+// API key de Google Sheets. Queda visible en el navegador (sitio
+// estático): en Google Cloud Console DEBE restringirse a
+//   • API: solo "Google Sheets API"
+//   • Sitios web (referrers HTTP): el dominio de GitHub Pages.
+// Aun restringida sólo da lectura a Sheets públicos: no escribe nada.
+const SHEETS_API_KEY = 'AIzaSyA0HsJDk9p-ZVZP13PQKonZzS9KkUNW4_8';
 
 // Nombre exacto de cada pestaña del Sheet → conjunto de datos.
 const SHEET_TABS = {
@@ -28,12 +42,16 @@ const SHEET_TABS = {
 
 // ── ENTRADA PRINCIPAL ──────────────────────────────────────────
 async function loadAllData() {
-  const sg = window.__SG || {};
+  if (!(SHEET_ID && SHEETS_API_KEY && /^https?:$/.test(location.protocol))) {
+    console.warn('[SemiGITA] El contenido se lee del Google Sheet por ' +
+      'http/https. Abierto por file:// no hay datos: usa un servidor ' +
+      'local o GitHub Pages.');
+  }
 
-  const researchLines = await loadDataset('researchLines', sg.researchLines || [], rowsToResearchLines);
-  const members       = await loadDataset('members',       sg.members       || [], rowsToMembers);
-  const projects      = await loadDataset('projects',      sg.projects      || [], rowsToProjects);
-  const publications  = await loadDataset('publications',  sg.publications  || [], rowsToPublications);
+  const researchLines = await loadDataset('researchLines', rowsToResearchLines);
+  const members       = await loadDataset('members',       rowsToMembers);
+  const projects      = await loadDataset('projects',      rowsToProjects);
+  const publications  = await loadDataset('publications',  rowsToPublications);
 
   renderResearchLines(researchLines);
   renderMembers(members);
@@ -42,64 +60,57 @@ async function loadAllData() {
   updateCounters(members, projects, publications, researchLines);
 }
 
-// Intenta leer una pestaña del Sheet; ante cualquier fallo (sin
-// internet, file://, Sheet privado…) usa el respaldo local.
-async function loadDataset(key, fallback, mapRows) {
-  const canRemote = SHEET_ID && /^https?:$/.test(location.protocol);
-  if (!canRemote) return fallback;
+// Lee una pestaña del Sheet. Ante cualquier fallo (sin internet,
+// file://, Sheet privado…) devuelve [] y esa sección queda vacía.
+async function loadDataset(key, mapRows) {
+  const canRemote = SHEET_ID && SHEETS_API_KEY && /^https?:$/.test(location.protocol);
+  if (!canRemote) return [];
 
   try {
     const tab = SHEET_TABS[key];
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}` +
-                `/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(tab)}`;
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}` +
+                `/values/${encodeURIComponent(tab)}` +
+                `?majorDimension=ROWS&key=${SHEETS_API_KEY}`;
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const mapped = mapRows(csvToObjects(await res.text()));
-    return mapped.length ? mapped : fallback;
+    const data = await res.json();
+    return mapRows(valuesToObjects(data.values || []));
   } catch (err) {
-    console.warn(`[SemiGITA] Pestaña "${key}" no disponible; usando datos locales.`, err);
-    return fallback;
+    console.error(`[SemiGITA] No se pudo cargar la pestaña "${key}" del Sheet.`, err);
+    return [];
   }
 }
 
-// ── CSV → objetos ──────────────────────────────────────────────
-function parseCSV(text) {
-  const rows = [];
-  let row = [], field = '', inQuotes = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (inQuotes) {
-      if (c === '"') {
-        if (text[i + 1] === '"') { field += '"'; i++; }
-        else inQuotes = false;
-      } else field += c;
-    } else if (c === '"') {
-      inQuotes = true;
-    } else if (c === ',') {
-      row.push(field); field = '';
-    } else if (c === '\n') {
-      row.push(field); rows.push(row); row = []; field = '';
-    } else if (c !== '\r') {
-      field += c;
-    }
-  }
-  if (field.length || row.length) { row.push(field); rows.push(row); }
-  return rows;
-}
-
-function csvToObjects(text) {
-  const rows = parseCSV(text).filter(r => r.some(c => c.trim() !== ''));
+// ── Filas del Sheet → objetos ──────────────────────────────────
+// La Sheets API devuelve `values` como arrays de filas; la fila 1 son
+// las cabeceras. Las celdas vacías al final de una fila se omiten, por
+// eso se normaliza con (r[i] ?? '').
+function valuesToObjects(values) {
+  const rows = values.filter(r => r.some(c => String(c).trim() !== ''));
   if (rows.length < 2) return [];
-  const headers = rows[0].map(h => h.trim().toLowerCase());
+  const headers = rows[0].map(h => String(h).trim().toLowerCase());
   return rows.slice(1).map(r => {
     const obj = {};
-    headers.forEach((h, i) => { obj[h] = (r[i] || '').trim(); });
+    headers.forEach((h, i) => { obj[h] = String(r[i] ?? '').trim(); });
     return obj;
   });
 }
 
 const splitList = v => (v || '').split('|').map(s => s.trim()).filter(Boolean);
 const isYes     = v => /^(si|sí|true|x|1)$/i.test((v || '').trim());
+
+// Casilla foto/imagen: acepta ruta del repo (assets/...), URL http(s)
+// cualquiera, o enlace/ID de Google Drive. Los enlaces de Drive
+// (.../d/ID/view, ?id=ID) o un ID suelto se convierten a una URL
+// incrustable en <img>. El archivo debe estar "Cualquiera con el enlace".
+function resolveImg(v) {
+  const s = (v || '').trim();
+  if (!s) return '';
+  const id = s.match(/\/d\/([\w-]{20,})/)
+          || s.match(/[?&]id=([\w-]{20,})/)
+          || (/^[\w-]{20,}$/.test(s) ? [, s] : null);
+  return id ? `https://lh3.googleusercontent.com/d/${id[1]}` : s;
+}
 
 // ── Mapeo CSV → modelo de datos ────────────────────────────────
 function rowsToResearchLines(rows) {
@@ -112,7 +123,7 @@ function rowsToResearchLines(rows) {
 function rowsToMembers(rows) {
   return rows.map(r => ({
     id: r.id, name: r.nombre, role: r.rol, specialty: r.especialidad,
-    photo: r.foto || '', bio: r.bio || '', active: isYes(r.activo),
+    photo: resolveImg(r.foto), bio: r.bio || '', active: isYes(r.activo),
     links: {
       email: r.email || '', linkedin: r.linkedin || '',
       researchgate: r.researchgate || '', github: r.github || '',
@@ -126,7 +137,7 @@ function rowsToProjects(rows) {
     status: (r.estado || 'active').toLowerCase(),
     featured: isYes(r.destacado),
     tags: splitList(r.tags), members: splitList(r.miembros),
-    image: r.imagen || '',
+    image: resolveImg(r.imagen),
     links: { github: r.github || '', paper: r.paper || '', demo: r.demo || '' },
     startDate: r.fecha || '',
   })).filter(p => p.id);
